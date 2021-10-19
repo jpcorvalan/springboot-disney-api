@@ -29,7 +29,7 @@ public class Genero implements Serializable {
     @Column(name = "url_imagen")
     private String urlImagen;
     
-    @OneToMany(mappedBy = "genero")
+    @OneToMany
     private List<Pelicula> peliculasAsociadas;
     
 }

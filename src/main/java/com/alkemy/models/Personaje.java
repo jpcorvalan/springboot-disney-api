@@ -38,7 +38,7 @@ public class Personaje implements Serializable {
     @Basic
     private String historia;
     
-    @ManyToMany(mappedBy = "personajesAsociados")
-    private List<Pelicula> peliculasAsociadas;
+    @ManyToMany(mappedBy = "personajes")
+    private List<Pelicula> peliculas;
     
 }

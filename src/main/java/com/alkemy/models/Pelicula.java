@@ -42,10 +42,6 @@ public class Pelicula implements Serializable {
     private Byte calificacion;
     
     @ManyToMany
-    private List<Personaje> personajesAsociados;
-    
-    @ManyToOne
-    @JoinColumn(name = "id", insertable = false, updatable = false)
-    private Genero genero;
+    private List<Personaje> personajes;
     
 }
