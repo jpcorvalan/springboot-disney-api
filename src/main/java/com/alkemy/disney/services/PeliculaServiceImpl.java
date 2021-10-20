@@ -1,13 +1,15 @@
 
-package com.alkemy.services;
+package com.alkemy.disney.services;
 
-import com.alkemy.dao.IPeliculaDao;
-import com.alkemy.models.Pelicula;
+import com.alkemy.disney.dao.IPeliculaDao;
+import com.alkemy.disney.models.Pelicula;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+@Service
 public class PeliculaServiceImpl implements IPeliculaService{
     
     @Autowired

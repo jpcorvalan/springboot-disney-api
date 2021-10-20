@@ -1,11 +1,13 @@
-package com.alkemy.services;
+package com.alkemy.disney.services;
 
-import com.alkemy.dao.IGeneroDao;
-import com.alkemy.models.Genero;
+import com.alkemy.disney.dao.IGeneroDao;
+import com.alkemy.disney.models.Genero;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class GeneroServiceImpl implements IGeneroService{
     
     @Autowired

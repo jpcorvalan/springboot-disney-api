@@ -1,7 +1,7 @@
-package com.alkemy.services;
+package com.alkemy.disney.services;
 
 import java.util.List;
-import com.alkemy.models.Pelicula;
+import com.alkemy.disney.models.Pelicula;
 
 public interface IPeliculaService {  
     

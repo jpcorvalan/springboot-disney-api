@@ -1,4 +1,4 @@
-package com.alkemy.models;
+package com.alkemy.disney.models;
 
 import java.io.Serializable;
 import java.util.Date;

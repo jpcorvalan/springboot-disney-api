@@ -1,12 +1,14 @@
-package com.alkemy.services;
+package com.alkemy.disney.services;
 
-import com.alkemy.dao.IPersonajeDao;
-import com.alkemy.models.Personaje;
+import com.alkemy.disney.dao.IPersonajeDao;
+import com.alkemy.disney.models.Personaje;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+@Service
 public class PersonajeServiceImpl implements IPersonajeService{
     
     @Autowired
