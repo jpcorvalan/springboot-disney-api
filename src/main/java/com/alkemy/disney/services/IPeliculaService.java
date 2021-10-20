@@ -9,7 +9,7 @@ public interface IPeliculaService {
     
     public Pelicula encontrarPelicula(Pelicula pelicula);
     
-    public void guardarPelicula(Pelicula pelicula);
+    public Pelicula guardarPelicula(Pelicula pelicula);
     
     public void eliminarPelicula(Pelicula pelicula);
     

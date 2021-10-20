@@ -11,7 +11,7 @@ public interface IGeneroService {
     
     public Genero encontrarGenero(Genero genero);
     
-    public void crearGenero(Genero genero);
+    public Genero crearGenero(Genero genero);
     
     public void eliminarGenero(Genero genero);
     

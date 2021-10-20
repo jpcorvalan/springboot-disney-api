@@ -27,8 +27,8 @@ public class GeneroServiceImpl implements IGeneroService{
 
     @Override
     @Transactional
-    public void crearGenero(Genero genero) {
-        generoDao.save(genero);
+    public Genero crearGenero(Genero genero) {
+        return generoDao.save(genero);
     }
 
     @Override

@@ -28,17 +28,28 @@ public class PersonajeServiceImpl implements IPersonajeService{
         // aquí, ni en la interface, hacemos uso de "orElse" para aclarar que pasará en caso de no encontrarse el personaje
         return personajeDao.findById(personaje.getId()).orElse(null);
     }
-
+    
     @Override
-    @Transactional
-    public void guardarPersonaje(Personaje personaje) {
-        personajeDao.save(personaje);
+    public Personaje encontrarPersonajePorId(int id){
+        return personajeDao.findById(id).orElse(null);
     }
 
     @Override
     @Transactional
-    public void eliminarPersonaje(Personaje personaje) {
-        personajeDao.delete(personaje);
+    public Personaje guardarPersonaje(Personaje personaje) {
+        return personajeDao.save(personaje);
+    }
+
+    @Override
+    @Transactional
+    public boolean eliminarPersonaje(int id) {
+        try{
+            personajeDao.deleteById(id);
+            return true;
+        }catch(Exception e){
+            System.out.println(e);
+            return false;
+        }
     }
     
     

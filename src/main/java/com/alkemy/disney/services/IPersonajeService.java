@@ -11,8 +11,10 @@ public interface IPersonajeService {
     
     public Personaje encontrarPersonaje(Personaje personaje);
     
-    public void guardarPersonaje(Personaje personaje);
+    public Personaje encontrarPersonajePorId(int id);
     
-    public void eliminarPersonaje(Personaje personaje);
+    public Personaje guardarPersonaje(Personaje personaje);
+    
+    public boolean eliminarPersonaje(int id);
     
 }
