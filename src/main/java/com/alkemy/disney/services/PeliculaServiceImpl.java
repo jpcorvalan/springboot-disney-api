@@ -24,7 +24,7 @@ public class PeliculaServiceImpl implements IPeliculaService{
     @Override
     @Transactional(readOnly = true)
     public Pelicula encontrarPelicula(Pelicula pelicula) {
-        return peliculaDao.findById(pelicula.getId()).orElse(null);
+        return peliculaDao.findById(pelicula.getIdPelicula()).orElse(null);
     }
 
     @Override

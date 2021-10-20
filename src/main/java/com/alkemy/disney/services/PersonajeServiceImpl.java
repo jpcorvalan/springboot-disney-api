@@ -26,7 +26,7 @@ public class PersonajeServiceImpl implements IPersonajeService{
         
         // Este método devuelve un "Optional<>", entonces para no cambiar el tipo de retorno del método
         // aquí, ni en la interface, hacemos uso de "orElse" para aclarar que pasará en caso de no encontrarse el personaje
-        return personajeDao.findById(personaje.getId()).orElse(null);
+        return personajeDao.findById(personaje.getIdPersonaje()).orElse(null);
     }
     
     @Override

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +27,8 @@ public class Personaje implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
-    private Integer id;
+    @Column(name = "id_personaje", unique = true, nullable = false)
+    private Integer idPersonaje;
     
     @Basic
     @Column(name = "url_imagen")
@@ -45,7 +46,10 @@ public class Personaje implements Serializable {
     @Basic
     private String historia;
     
-    @ManyToMany(mappedBy = "personajes")
-    private List<Pelicula> peliculas;
+    @OneToMany(mappedBy = "pelicula")
+    private List<PeliculaPersonaje> peliculas;
+    
+//    @ManyToMany(mappedBy = "personajes")
+//    private List<Pelicula> peliculas;
     
 }

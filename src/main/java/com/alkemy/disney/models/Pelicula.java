@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,8 +31,8 @@ public class Pelicula implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
-    private Integer id;
+    @Column(name = "id_pelicula", unique = true, nullable = false)
+    private Integer idPelicula;
     
     @Basic
     @Column(name = "url_imagen")
@@ -47,7 +48,10 @@ public class Pelicula implements Serializable {
     @Basic
     private Byte calificacion;
     
-    @ManyToMany
-    private List<Personaje> personajes;
+    @OneToMany(mappedBy = "personaje")
+    private List<PeliculaPersonaje> personajes;
+    
+//    @ManyToMany
+//    private List<Personaje> personajes;
     
 }

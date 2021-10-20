@@ -22,7 +22,7 @@ public class GeneroServiceImpl implements IGeneroService{
     @Override
     @Transactional(readOnly = true)
     public Genero encontrarGenero(Genero genero) {
-        return generoDao.findById(genero.getId()).orElse(null);
+        return generoDao.findById(genero.getIdGenero()).orElse(null);
     }
 
     @Override
