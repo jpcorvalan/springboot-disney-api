@@ -30,7 +30,7 @@ public class PersonajeController {
     }
     
     @PostMapping("/crear")
-    public Personaje guardarPersonaje(@RequestBody Personaje personaje){
+    public Personaje guardarPersonaje(@RequestBody Personaje personaje){        
         return this.personajeService.guardarPersonaje(personaje);
     }
     

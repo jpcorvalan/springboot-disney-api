@@ -24,7 +24,7 @@ public class PeliculaController {
     }
     
     @PostMapping("/crear")
-    public Pelicula guardarPelicula(@RequestBody Pelicula pelicula){
+    public Pelicula guardarPelicula(@RequestBody Pelicula pelicula){        
         return this.peliculaService.guardarPelicula(pelicula);
     }
     
