@@ -75,7 +75,7 @@ public class ShowController {
         
     }
     
-    @PostMapping("/crear")
+    @PostMapping("/create")
     public Show guardarPelicula(@RequestBody Show show){        
         return this.showService.saveShow(show);
     }
