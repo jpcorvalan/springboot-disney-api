@@ -1,3 +1,25 @@
+
+/*
+
+@Builder y @AllArgsConstructor (access = AccessLevel.PRIVATE)
+    En esta clase se implementó el patrón Builder (Con @Builder de Lombok). Esta etiqueta se combinó con otra
+    llamada @AllArgsConstructor(access = AccessLevel.private).
+    Esta combinación hace que los constructores creados por el builder, sean Privados, y solo puedan ser accedidos
+    por el mismo Lombok cuando se invoque al Builder.
+    Sin la segunda anotación mencionada, se produce un error de compilación, ya que, por defecto, Spring necesita
+    que las clases entidades tengan, mínimo, un constructor por defecto, el cual crea conflicto si implementamos
+    solo @Builder, ya que por defecto, los constructores de este serán de acceso "default".
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+    Esta etiqueta sirve para que, al llamar a los endpoints de la API, solo se muestren aquellos campos que posean
+    datos distintos a null.
+    Se implementó, debido a la consigna que indica que, los registros en conjunto, deben mostrar cierta cantidad de campos,
+    y los registros individuales, deben mostrar todos los campos.
+    Al usar el patrón Builder explicado más arriba, creo instancias de objetos con solo los campos necesarios, que son
+    los que luego terminan siendo insertados dentro de la lista requerida.
+
+*/
+
 package com.alkemy.disney.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
