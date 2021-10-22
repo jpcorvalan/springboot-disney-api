@@ -20,6 +20,12 @@ public class ShowServiceImplementation implements IShowService{
     public List<Show> findAllShows() {
         return (List<Show>) showDao.findAll();
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Show findShowById(int id){
+        return showDao.findById(id).orElse(null);
+    }
 
     @Override
     @Transactional(readOnly = true)

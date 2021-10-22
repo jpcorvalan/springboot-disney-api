@@ -16,7 +16,7 @@ public class CharacterServiceImplementation implements ICharacterService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Character> findAllCharacters() {
+    public List<Character> findAllCharacters() {        
         return (List<Character>) characterDao.findAll();
     }
 

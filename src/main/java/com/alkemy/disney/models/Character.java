@@ -13,6 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +25,8 @@ import lombok.Setter;
 @Table(name = "characters")
 @Getter
 @Setter
+@AllArgsConstructor (access = AccessLevel.PRIVATE)
+@Builder
 public class Character implements Serializable {
     
     

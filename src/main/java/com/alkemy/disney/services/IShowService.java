@@ -9,6 +9,8 @@ public interface IShowService {
     
     public Show findShow(Show show);
     
+    public Show findShowById(int id);
+    
     public Show saveShow(Show show);
     
     public void deleteShow(Show show);

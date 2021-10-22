@@ -1,8 +1,6 @@
 package com.alkemy.disney.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -20,17 +18,19 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@JsonIgnoreProperties(value = { "idShow", "releaseDate", "score", "characters"})
-@JsonInclude(Include.NON_NULL)
-@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "shows")
 @Getter
 @Setter
+@AllArgsConstructor (access = AccessLevel.PRIVATE)
+@Builder
 public class Show implements Serializable {
     
     
