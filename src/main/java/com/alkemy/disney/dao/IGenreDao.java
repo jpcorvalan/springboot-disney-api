@@ -1,10 +1,10 @@
 
 package com.alkemy.disney.dao;
 
-import com.alkemy.disney.models.Pelicula;
+import com.alkemy.disney.models.Genre;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IPeliculaDao extends CrudRepository<Pelicula, Integer>{ 
+public interface IGenreDao extends CrudRepository<Genre, Integer>{    
 }

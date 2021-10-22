@@ -1,7 +1,8 @@
 package com.alkemy.disney.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,46 +12,44 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@JsonInclude(Include.NON_NULL)
 @Entity
-@Table(name = "genero")
+@Table(name = "genres")
 @Getter
 @Setter
-public class Genero implements Serializable {
+public class Genre implements Serializable {
     
     
     // Variables de instancia/Campos de tabla
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_genero", unique = true, nullable = false)
-    private Integer idGenero;
+    @Column(name = "id_genre", unique = true, nullable = false)
+    private Integer idGenre;
     
     @Basic
-    private String nombre;
+    private String name;
     
     @Basic
-    @Column(name = "url_imagen")
-    private String urlImagen;
+    @Column(name = "image_url")
+    private String imageUrl;
     
     @OneToMany
-    private List<Pelicula> peliculasAsociadas;
+    private List<Show> asociatedShows;
     
     
     
     
     // Constructores
-    public Genero() {
+    public Genre() {
     }
     
     
-    public Genero(String nombre, String urlImagen) {
-        this.nombre = nombre;
-        this.urlImagen = urlImagen;
-        //this.peliculasAsociadas = new ArrayList<>();
+    public Genre(String name, String imageUrl) {
+        this.name = name;
+        this.imageUrl = imageUrl;
     }
     
     

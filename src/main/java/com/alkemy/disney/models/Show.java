@@ -1,8 +1,9 @@
 package com.alkemy.disney.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -16,44 +17,42 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@JsonIgnoreProperties(value = { "idPelicula", "fechaCreacion", "calificacion", "personajes"})
+@JsonIgnoreProperties(value = { "idShow", "releaseDate", "score", "characters"})
+@JsonInclude(Include.NON_NULL)
 @Data
 @Entity
-@Table(name = "peliculas")
+@Table(name = "shows")
 @Getter
 @Setter
-public class Pelicula implements Serializable {
+public class Show implements Serializable {
     
     
     // Variables de instancia/Campos de tabla
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_pelicula", unique = true, nullable = false)
-    private Integer idPelicula;
+    @Column(name = "id_show", unique = true, nullable = false)
+    private Integer idShow;
     
     @Basic
-    @Column(name = "url_imagen")
-    private String urlImagen;
+    @Column(name = "image_url")
+    private String imageUrl;
     
     @Basic
-    private String titulo;
+    private String title;
     
     @Temporal(TemporalType.DATE)
-    @Column(name = "fecha_creacion")
-    private Date fechaCreacion;
+    @Column(name = "release_date")
+    private Date releaseDate;
     
     @Basic
-    private Byte calificacion;
+    private Byte score;
     
     
     //Relación ManyToMany donde especificamos los campos de la 3er tabla
@@ -62,30 +61,32 @@ public class Pelicula implements Serializable {
             cascade = CascadeType.ALL
     )
     @JoinTable(
-            name = "peliculas_personajes",            
+            name = "characters_shows",
             joinColumns = {
-                @JoinColumn(name = "id_pelicula")
+                @JoinColumn(name = "id_show")
             },
             inverseJoinColumns = {
-                @JoinColumn(name = "id_personaje")
+                @JoinColumn(name = "id_character")
             }
     )
-    private List<Personaje> personajes;
+    private List<Character> characters;
     
     
     
     
     // Constructores
-    public Pelicula() {
+    public Show() {
+    }
+
+    public Show(String imageUrl, String title, Date releaseDate, Byte score) {
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.releaseDate = releaseDate;
+        this.score = score;
     }
     
-
-    public Pelicula(String urlImagen, String titulo, Date fechaCreacion, Byte calificacion) {
-        this.urlImagen = urlImagen;
-        this.titulo = titulo;
-        this.fechaCreacion = fechaCreacion;
-        this.calificacion = calificacion;
-        //this.personajes = new ArrayList<>();
-    }
+    
+    
+    
     
 }

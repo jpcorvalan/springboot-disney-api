@@ -1,8 +1,8 @@
 
 package com.alkemy.disney.controllers;
 
-import com.alkemy.disney.models.Personaje;
-import com.alkemy.disney.services.IPersonajeService;
+import com.alkemy.disney.models.Character;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,27 +11,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.alkemy.disney.services.ICharacterService;
 
 @RestController
 @RequestMapping("/characters")
-public class PersonajeController {
+public class CharacterController {
     
     @Autowired
-    private IPersonajeService personajeService;
+    private ICharacterService characterService;
     
     @GetMapping()
-    public List<Personaje> obtenerPersonajes(){
-        return this.personajeService.obtenerPersonajes();
+    public List<Character> obtenerPersonajes(){
+        return this.characterService.findAllCharacters();
     }
     
     @GetMapping(path = "/{id}")
-    public Personaje obtenerPersonajePorId(@PathVariable("id") int id){
-        return this.personajeService.encontrarPersonajePorId(id);
+    public Character obtenerPersonajePorId(@PathVariable("id") int id){
+        return this.characterService.findCharacterById(id);
     }
     
     @PostMapping("/crear")
-    public Personaje guardarPersonaje(@RequestBody Personaje personaje){        
-        return this.personajeService.guardarPersonaje(personaje);
+    public Character guardarPersonaje(@RequestBody Character personaje){        
+        return this.characterService.saveCharacter(personaje);
     }
     
     

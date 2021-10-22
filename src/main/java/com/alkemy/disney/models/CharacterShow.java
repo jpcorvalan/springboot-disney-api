@@ -18,22 +18,22 @@ import lombok.Setter;
 
 
 @Entity
-@Table(name = "peliculas_personajes")
+@Table(name = "characters_shows")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PeliculaPersonaje implements Serializable {
+public class CharacterShow implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Integer id;
     
-    @Column(name = "id_pelicula")
-    private Integer pelicula;    
+    @Column(name = "id_show")
+    private Integer show;
 
-    @Column(name = "id_personaje")
-    private Integer personaje;
+    @Column(name = "id_character")
+    private Integer character;
     
 }
