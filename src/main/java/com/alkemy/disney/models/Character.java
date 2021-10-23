@@ -35,6 +35,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -60,19 +62,24 @@ public class Character implements Serializable {
     
     @Basic
     @Column(name = "image_url")
+    @NotEmpty(message = "Tiene que especificar una URL de imagen")
     private String imageUrl;
     
     @Basic
+    @NotEmpty(message = "Tiene que especificar un nombre")
     private String name;
     
     @Basic
+    @Positive(message = "La edad no puede ser 0 o negativa")
     private Integer age;
     
     @Basic
+    @Positive(message = "El peso no puede ser 0 o negativo")
     private Double weight;
     
     @Basic
     @Column(columnDefinition = "TEXT")
+    @NotEmpty(message = "Tiene que especificar una historia")
     private String history;
     
     @ManyToMany(

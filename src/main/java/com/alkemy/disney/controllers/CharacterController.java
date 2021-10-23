@@ -1,6 +1,7 @@
 
 package com.alkemy.disney.controllers;
 
+import com.alkemy.disney.exceptions.ModelNotFoundException;
 import com.alkemy.disney.models.Character;
 import com.alkemy.disney.models.Show;
 import java.util.ArrayList;
@@ -14,6 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alkemy.disney.services.ICharacterService;
 import com.alkemy.disney.services.IShowService;
+import java.util.HashMap;
+import javax.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
 @RestController
 @RequestMapping("/characters")
@@ -42,10 +50,11 @@ public class CharacterController {
     }
     
     @GetMapping(path = "/{id}")
-    public Character obtenerPersonajePorId(@PathVariable("id") int id){
+    public ResponseEntity<Character> obtenerPersonajePorId(@PathVariable("id") int id){
         
-        try{
-            Character characterFinded = this.characterService.findCharacterById(id);
+        Character characterFinded = this.characterService.findCharacterById(id);
+        
+        if(characterFinded != null){
 
             List<Show> characterShows = characterFinded.getShows();
             List<Show> mappedShows = new ArrayList<>();
@@ -62,18 +71,26 @@ public class CharacterController {
 
             characterFinded.setShows(mappedShows);
 
-            return characterFinded;
+            return new ResponseEntity<>(characterFinded, HttpStatus.OK);
             
-        } catch(Exception e) {
-            
-            return null;
-            
+        } else {            
+            throw new ModelNotFoundException("El personaje con el id " + id + " no existe");            
         }
     }
     
     @PostMapping("/crear")
-    public Character guardarPersonaje(@RequestBody Character personaje){        
-        return this.characterService.saveCharacter(personaje);
+    public ResponseEntity<Object> guardarPersonaje(@RequestBody @Valid Character personaje, Errors errors) throws Throwable{
+        try{
+            return new ResponseEntity<>(this.characterService.saveCharacter(personaje), HttpStatus.CREATED);            
+        }catch(Exception e){            
+            HashMap<String, String> mappedErrors = new HashMap<>();
+            
+            for(FieldError validation : errors.getFieldErrors()){
+                mappedErrors.put(validation.getField(), validation.getDefaultMessage());
+            }
+            
+            return new ResponseEntity<>(mappedErrors, HttpStatus.BAD_REQUEST);
+        }            
     }
     
     
