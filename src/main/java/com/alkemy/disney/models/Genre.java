@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,10 +31,12 @@ public class Genre implements Serializable {
     private Integer idGenre;
     
     @Basic
+    @NotEmpty(message = "Tiene que especificar un nombre")
     private String name;
     
     @Basic
     @Column(name = "image_url")
+    @NotEmpty(message = "Tiene que especificar una imagen")
     private String imageUrl;
     
     @OneToMany

@@ -19,9 +19,10 @@ import java.util.HashMap;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @RestController
 @RequestMapping("/characters")
@@ -30,6 +31,9 @@ public class CharacterController {
     @Autowired
     private ICharacterService characterService;
     private IShowService showService;
+    
+    
+    
     
     @GetMapping()
     public List<Character> obtenerPersonajes(){
@@ -48,6 +52,9 @@ public class CharacterController {
         return mappedCharacters;
         
     }
+    
+    
+    
     
     @GetMapping(path = "/{id}")
     public ResponseEntity<Character> obtenerPersonajePorId(@PathVariable("id") int id){
@@ -78,8 +85,11 @@ public class CharacterController {
         }
     }
     
+    
+    
+    
     @PostMapping("/crear")
-    public ResponseEntity<Object> guardarPersonaje(@RequestBody @Valid Character personaje, Errors errors) throws Throwable{
+    public ResponseEntity<Object> guardarPersonaje(@Valid @RequestBody Character personaje, Errors errors) {
         try{
             return new ResponseEntity<>(this.characterService.saveCharacter(personaje), HttpStatus.CREATED);            
         }catch(Exception e){            
@@ -91,6 +101,16 @@ public class CharacterController {
             
             return new ResponseEntity<>(mappedErrors, HttpStatus.BAD_REQUEST);
         }            
+    }
+    
+    
+    
+    
+    // Si el cuerpo de la petición es inválido, arrojará un mensaje aclarándolo
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public ResponseEntity<Object> invalidMessage(){
+        String errorMsg = "La petición solicitada es inválida";
+        return new ResponseEntity<>(errorMsg, HttpStatus.NO_CONTENT);
     }
     
     

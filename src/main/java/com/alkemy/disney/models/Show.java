@@ -24,7 +24,7 @@ package com.alkemy.disney.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -38,13 +38,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
@@ -64,16 +67,21 @@ public class Show implements Serializable {
     
     @Basic
     @Column(name = "image_url")
+    @NotEmpty(message = "Tiene que especificar una imagen")
     private String imageUrl;
     
     @Basic
+    @NotEmpty(message = "Tiene que especificar un nombre para la película/serie")
     private String title;
     
-    @Temporal(TemporalType.DATE)
     @Column(name = "release_date")
-    private Date releaseDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "El formato de la fecha debe ser AAAA-mm-dd (Año-mes-día)")
+    private LocalDate releaseDate;
     
     @Basic
+    @Min(value = 1, message = "El puntaje debe ir de 1 a 5")
+    @Max(value = 5, message = "El puntaje debe ir de 1 a 5")
     private Byte score;
     
     
@@ -100,7 +108,7 @@ public class Show implements Serializable {
     public Show() {
     }
 
-    public Show(String imageUrl, String title, Date releaseDate, Byte score) {
+    public Show(String imageUrl, String title, LocalDate releaseDate, Byte score) {
         this.imageUrl = imageUrl;
         this.title = title;
         this.releaseDate = releaseDate;
