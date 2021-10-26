@@ -4,8 +4,8 @@ package com.alkemy.disney.controllers;
 import com.alkemy.disney.exceptions.ModelNotFoundException;
 import com.alkemy.disney.models.Character;
 import com.alkemy.disney.models.Show;
-import java.util.ArrayList;
-import java.util.List;
+import com.alkemy.disney.services.ICharacterService;
+import com.alkemy.disney.services.IShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,20 +13,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.alkemy.disney.services.ICharacterService;
-import com.alkemy.disney.services.IShowService;
-import java.util.HashMap;
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/characters")
 public class CharacterController {
+    
+    
+    
     
     @Autowired
     private ICharacterService characterService;
@@ -34,22 +38,46 @@ public class CharacterController {
     
     
     
-    
+
     @GetMapping()
-    public List<Character> obtenerPersonajes(){
-        List<Character> allCharacters = this.characterService.findAllCharacters();
-        List<Character> mappedCharacters = new ArrayList<>();
+    public List<Character> obtenerPersonajes(@RequestParam(required = false) String name, @RequestParam(required = false) Double weight, @RequestParam(required = false) Integer age){
         
-        for (Character chara : allCharacters) {
-            Character auxCharacter = Character.builder()
-                    .imageUrl(chara.getImageUrl())
-                    .name(chara.getName())
-                    .build();
+        List<Character> queryCharacters = this.characterService.findByNameOrAgeOrWeight(name, age, weight);
+        List<Character> mappedCharacters = new ArrayList<>();        
+        
+        
+        // Si los parámetros solicitados no vienen en el query, se muestran todos los personajes
+        // Si viene al menos 1 parámetro, se hace la búsqueda y se devuelven los resultados
+        if(name == null && weight == null && age == null){
             
-            mappedCharacters.add(auxCharacter);
-        }
-        
-        return mappedCharacters;
+            List<Character> allCharacters = this.characterService.findAllCharacters();            
+            
+            // Se crean nuevos Character con los atributos requeridos y se insertan en un nuevo Array
+            for (Character chara : allCharacters) {
+                Character auxCharacter = Character.builder()
+                        .imageUrl(chara.getImageUrl())
+                        .name(chara.getName())
+                        .build();
+
+                mappedCharacters.add(auxCharacter);
+            }
+
+            return mappedCharacters;    
+            
+        } else {
+            
+            // Se crean nuevos Character con los atributos requeridos y se insertan en un nuevo Array
+            for(Character chara : queryCharacters){
+                Character auxCharacter = Character.builder()
+                        .imageUrl(chara.getImageUrl())
+                        .name(chara.getName())
+                        .build();
+                mappedCharacters.add(auxCharacter);
+            }
+            
+            
+            return mappedCharacters;
+        }        
         
     }
     
@@ -66,6 +94,7 @@ public class CharacterController {
             List<Show> characterShows = characterFinded.getShows();
             List<Show> mappedShows = new ArrayList<>();
 
+            // Se crean nuevos Character con los atributos requeridos y se insertan en un nuevo Array
             for(Show show : characterShows){
                 Show auxShow = Show.builder()
                         .imageUrl(show.getImageUrl())
@@ -92,13 +121,17 @@ public class CharacterController {
     public ResponseEntity<Object> guardarPersonaje(@Valid @RequestBody Character personaje, Errors errors) {
         try{
             return new ResponseEntity<>(this.characterService.saveCharacter(personaje), HttpStatus.CREATED);            
-        }catch(Exception e){            
+        }catch(Exception e){
+            
+            // Creamos un HashMap para combinar los campos con error, con el mensaje de error que se obtiene
             HashMap<String, String> mappedErrors = new HashMap<>();
             
+            // Insertamos las claves valores dentro del HashMap
             for(FieldError validation : errors.getFieldErrors()){
                 mappedErrors.put(validation.getField(), validation.getDefaultMessage());
             }
             
+            // Retornamos un Array clave/valor, donde se puede visualizar el campo con error más la razón del error.
             return new ResponseEntity<>(mappedErrors, HttpStatus.BAD_REQUEST);
         }            
     }

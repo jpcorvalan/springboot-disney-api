@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.alkemy.disney.dao.ICharacterDao;
+import com.alkemy.disney.models.Show;
 
 
 @Service
@@ -32,6 +33,11 @@ public class CharacterServiceImplementation implements ICharacterService{
     @Override
     public Character findCharacterById(int id){
         return characterDao.findById(id).orElse(null);
+    }
+    
+    @Override
+    public List<Character> findByNameOrAgeOrWeight(String name, Integer age, Double weight){
+        return characterDao.findByNameOrAgeOrWeight(name, age, weight);
     }
 
     @Override
