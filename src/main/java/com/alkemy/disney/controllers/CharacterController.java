@@ -43,41 +43,20 @@ public class CharacterController {
     public List<Character> obtenerPersonajes(@RequestParam(required = false) String name, @RequestParam(required = false) Double weight, @RequestParam(required = false) Integer age){
         
         List<Character> queryCharacters = this.characterService.findByNameOrAgeOrWeight(name, age, weight);
-        List<Character> mappedCharacters = new ArrayList<>();        
-        
         
         // Si los parámetros solicitados no vienen en el query, se muestran todos los personajes
-        // Si viene al menos 1 parámetro, se hace la búsqueda y se devuelven los resultados
         if(name == null && weight == null && age == null){
-            
-            List<Character> allCharacters = this.characterService.findAllCharacters();            
-            
-            // Se crean nuevos Character con los atributos requeridos y se insertan en un nuevo Array
-            for (Character chara : allCharacters) {
-                Character auxCharacter = Character.builder()
-                        .imageUrl(chara.getImageUrl())
-                        .name(chara.getName())
-                        .build();
-
-                mappedCharacters.add(auxCharacter);
-            }
-
-            return mappedCharacters;    
-            
+            return ListMapper.characterListMapper(this.characterService.findAllCharacters());            
         } else {
             
-            // Se crean nuevos Character con los atributos requeridos y se insertan en un nuevo Array
-            for(Character chara : queryCharacters){
-                Character auxCharacter = Character.builder()
-                        .imageUrl(chara.getImageUrl())
-                        .name(chara.getName())
-                        .build();
-                mappedCharacters.add(auxCharacter);
+            // Si hubo querys, pero la búsqueda no devolvió nada, se devuelve el arreglo vacío, caso contrario se realiza el mapeo.
+            if(queryCharacters.isEmpty()){
+                return queryCharacters;
+            }else{
+                return ListMapper.characterListMapper(queryCharacters);
             }
             
-            
-            return mappedCharacters;
-        }        
+        }
         
     }
     
