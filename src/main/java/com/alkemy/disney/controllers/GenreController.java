@@ -31,7 +31,13 @@ public class GenreController {
     
     @GetMapping()
     public List<Genre> obtenerGeneros(){
-        return this.genreService.findAllGenres();
+        List<Genre> allGenres = this.genreService.findAllGenres();
+        
+        for(Genre genre : allGenres){
+            genre.setAsociatedShows(ListMapper.showListMapper(genre.getAsociatedShows()));
+        }
+        
+        return allGenres;
     }
     
     
