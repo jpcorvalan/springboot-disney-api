@@ -37,22 +37,8 @@ public class ShowController {
     
     
     @GetMapping()
-    public List<Show> findAllShows(){
-        List<Show> allShows = this.showService.findAllShows();
-        List<Show> mappedShows = new ArrayList<>();
-        
-        for(Show show : allShows){
-            Show auxShow = Show.builder()
-                    .imageUrl(show.getImageUrl())
-                    .title(show.getTitle())
-                    .releaseDate(show.getReleaseDate())
-                    .build();
-            
-            mappedShows.add(auxShow);
-        }
-        
-        return mappedShows;
-        
+    public List<Show> findAllShows(){        
+        return ListMapper.showListMapper(this.showService.findAllShows());        
     }
     
     
@@ -65,27 +51,12 @@ public class ShowController {
         
         if(findedShow != null){
             
-            List<Character> showCharacters = findedShow.getCharacters();
-            List<Character> mappedCharacters = new ArrayList<>();
-            
-            for(Character chara : showCharacters){
-                
-                Character auxCharacter = Character.builder()
-                        .imageUrl(chara.getImageUrl())
-                        .name(chara.getName())
-                        .build();
-                
-                mappedCharacters.add(auxCharacter);
-                
-            }
-            
-            findedShow.setCharacters(mappedCharacters);
-            
+            findedShow.setCharacters(ListMapper.characterListMapper(findedShow.getCharacters()));
             
             return new ResponseEntity<>(findedShow, HttpStatus.OK);
             
         } else {
-            throw new ModelNotFoundException("El show con el id " + id + "no existe");
+            throw new ModelNotFoundException("El show con el id " + id + " no existe");
         }
         
     }
