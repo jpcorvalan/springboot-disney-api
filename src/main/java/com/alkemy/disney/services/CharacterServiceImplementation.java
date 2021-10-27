@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.alkemy.disney.dao.ICharacterDao;
 import com.alkemy.disney.models.Show;
+import java.util.ArrayList;
 
 
 @Service
@@ -14,13 +15,19 @@ public class CharacterServiceImplementation implements ICharacterService{
     
     @Autowired
     private ICharacterDao characterDao;
-
+    
+    
+    
+    
     @Override
     @Transactional(readOnly = true)
     public List<Character> findAllCharacters() {        
         return (List<Character>) characterDao.findAll();
     }
-
+    
+    
+    
+    
     @Override
     @Transactional(readOnly = true)
     public Character findCharacter(Character character) {
@@ -30,22 +37,42 @@ public class CharacterServiceImplementation implements ICharacterService{
         return characterDao.findById(character.getIdCharacter()).orElse(null);
     }
     
+    
+    
+    
     @Override
     public Character findCharacterById(int id){
         return characterDao.findById(id).orElse(null);
     }
     
+    
+    
+    
+    @Override
+    public List<Character> joinCharactersShows(Integer idShow){
+        return characterDao.joinCharactersShows(idShow);
+    }
+    
+    
+    
+    
     @Override
     public List<Character> findByNameOrAgeOrWeight(String name, Integer age, Double weight){
         return characterDao.findByNameOrAgeOrWeight(name, age, weight);
     }
-
+    
+    
+    
+    
     @Override
     @Transactional
     public Character saveCharacter(Character character) {
         return characterDao.save(character);
     }
-
+    
+    
+    
+    
     @Override
     @Transactional
     public boolean deleteCharacter(int id) {
@@ -57,7 +84,5 @@ public class CharacterServiceImplementation implements ICharacterService{
             return false;
         }
     }
-    
-    
     
 }

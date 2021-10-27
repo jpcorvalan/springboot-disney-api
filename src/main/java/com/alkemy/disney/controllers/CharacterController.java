@@ -3,9 +3,7 @@ package com.alkemy.disney.controllers;
 
 import com.alkemy.disney.exceptions.ModelNotFoundException;
 import com.alkemy.disney.models.Character;
-import com.alkemy.disney.models.Show;
 import com.alkemy.disney.services.ICharacterService;
-import com.alkemy.disney.services.IShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +19,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 
@@ -34,23 +31,47 @@ public class CharacterController {
     
     @Autowired
     private ICharacterService characterService;
-    private IShowService showService;
+    
+    
+    
+    
+    /*
+    @GetMapping("/query")
+    public List<Character> innerJoin(){
+        List<Character> allQueryCharacters = characterService.joinCharactersShows(idShow);
+        
+        for(Character chara : allQueryCharacters){
+            chara.setShows(ListMapper.showListMapper(chara.getShows()));
+        }
+        
+        return allQueryCharacters;        
+    }
+    */
     
     
     
 
     @GetMapping()
-    public List<Character> obtenerPersonajes(@RequestParam(required = false) String name, @RequestParam(required = false) Double weight, @RequestParam(required = false) Integer age){
-        
-        List<Character> queryCharacters = this.characterService.findByNameOrAgeOrWeight(name, age, weight);
+    public List<Character> obtenerPersonajes(
+            @RequestParam(required = false) String name, 
+            @RequestParam(required = false) Double weight, 
+            @RequestParam(required = false) Integer age,
+            @RequestParam(required = false) Integer show
+    ){
         
         // Si los parámetros solicitados no vienen en el query, se muestran todos los personajes
-        if(name == null && weight == null && age == null){
+        if(name == null && weight == null && age == null && show == null){
             return ListMapper.characterListMapper(this.characterService.findAllCharacters());            
         } else {
+            List<Character> queryCharacters = this.characterService.findByNameOrAgeOrWeight(name, age, weight);
+            List<Character> joinShowsTable = this.characterService.joinCharactersShows(show);
+            
+            for(Character chara : joinShowsTable){
+                queryCharacters.add(chara);
+            }
             
             // Si hubo querys, pero la búsqueda no devolvió nada, se devuelve el arreglo vacío, caso contrario se realiza el mapeo.
-            if(queryCharacters.isEmpty()){
+            if(queryCharacters.isEmpty()){                
                 return queryCharacters;
             }else{
                 return ListMapper.characterListMapper(queryCharacters);
@@ -68,23 +89,9 @@ public class CharacterController {
         
         Character characterFinded = this.characterService.findCharacterById(id);
         
-        if(characterFinded != null){
-
-            List<Show> characterShows = characterFinded.getShows();
-            List<Show> mappedShows = new ArrayList<>();
-
-            // Se crean nuevos Character con los atributos requeridos y se insertan en un nuevo Array
-            for(Show show : characterShows){
-                Show auxShow = Show.builder()
-                        .imageUrl(show.getImageUrl())
-                        .title(show.getTitle())
-                        .releaseDate(show.getReleaseDate())
-                        .build();
-
-                mappedShows.add(auxShow);
-            }
-
-            characterFinded.setShows(mappedShows);
+        if(characterFinded != null){            
+            
+            characterFinded.setShows(ListMapper.showListMapper(characterFinded.getShows()));
 
             return new ResponseEntity<>(characterFinded, HttpStatus.OK);
             
