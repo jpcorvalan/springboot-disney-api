@@ -3,6 +3,7 @@ package com.alkemy.disney.controllers;
 import java.util.List;
 import java.util.ArrayList;
 import com.alkemy.disney.models.Character;
+import com.alkemy.disney.models.Show;
 
 public class ListMapper {
 
@@ -12,7 +13,7 @@ public class ListMapper {
         
         // Se crean nuevos Character con los atributos requeridos y se insertan en un nuevo Array
         for (Character chara : characterList) {
-            com.alkemy.disney.models.Character auxCharacter = com.alkemy.disney.models.Character.builder()
+            Character auxCharacter = Character.builder()
                     .imageUrl(chara.getImageUrl())
                     .name(chara.getName())
                     .build();
@@ -21,6 +22,24 @@ public class ListMapper {
         }
         
         return mappedCharacters;
+    }
+    
+    
+    
+    public static List<Show> showListMapper(List<Show> showList){
+        List<Show> mappedShows = new ArrayList<>();
+        
+        for (Show show : showList){
+            Show auxShow = Show.builder()
+                    .imageUrl(show.getImageUrl())
+                    .title(show.getTitle())
+                    .releaseDate(show.getReleaseDate())
+                    .build();
+            
+            mappedShows.add(auxShow);
+        }
+        
+        return mappedShows;
     }
 
 }
