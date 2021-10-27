@@ -26,11 +26,35 @@ public class ShowServiceImplementation implements IShowService{
     public Show findShowById(int id){
         return showDao.findById(id).orElse(null);
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<Show> findShowsByGenre(Integer idGenre){
+        return showDao.findShowsByGenre(idGenre);
+    }
 
     @Override
     @Transactional(readOnly = true)
     public Show findShow(Show show) {
         return showDao.findById(show.getIdShow()).orElse(null);
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<Show> findByTitle(String title){
+        return showDao.findByTitle(title);
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<Show> orderAllByScoreAsc(){
+        return showDao.orderAllByScoreAsc();
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<Show> orderAllByScoreDesc(){
+        return showDao.orderAllByScoreDesc();
     }
 
     @Override

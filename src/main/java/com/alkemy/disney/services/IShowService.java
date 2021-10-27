@@ -11,6 +11,14 @@ public interface IShowService {
     
     public Show findShowById(int id);
     
+    public List<Show> findShowsByGenre(Integer idGenre);
+    
+    public List<Show> orderAllByScoreAsc();
+    
+    public List<Show> orderAllByScoreDesc();
+    
+    public List<Show> findByTitle(String title);
+    
     public Show saveShow(Show show);
     
     public void deleteShow(Show show);

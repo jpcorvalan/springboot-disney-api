@@ -23,7 +23,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import java.util.Optional;
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/movies")
@@ -35,12 +37,47 @@ public class ShowController {
     
     
     
-    
+    /*
     @GetMapping()
     public List<Show> findAllShows(){        
         return ListMapper.showListMapper(this.showService.findAllShows());        
     }
+    */
     
+    
+    
+    
+    @GetMapping()
+    public List<Show> findShows(
+            @RequestParam(required = false) Integer genre,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String order
+    ){
+        
+        if (genre == null && title == null && order == null){
+            return ListMapper.showListMapper(showService.findAllShows());
+        } else {
+            List<Show> showsByName = (title != null) ? showService.findByTitle(title) : new ArrayList<>();
+            List<Show> showsByGenre = (genre != null) ? showService.findShowsByGenre(genre) : new ArrayList<>();
+            List<Show> orderedShows = new ArrayList<>();
+            
+            if(order != null){
+                switch(order){
+                    case "ASC":
+                        orderedShows = ListMapper.showListMapper(showService.orderAllByScoreAsc());
+                        return orderedShows;
+                    case "DESC":
+                        orderedShows = ListMapper.showListMapper(showService.orderAllByScoreDesc());
+                        return orderedShows;
+                }                
+            }
+            
+            showsByName.addAll(showsByGenre);
+            
+            return ListMapper.showListMapper(showsByName);
+        }
+        
+    }
     
     
     
