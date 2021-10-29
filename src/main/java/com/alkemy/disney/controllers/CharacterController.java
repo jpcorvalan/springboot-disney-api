@@ -21,6 +21,7 @@ import org.springframework.validation.FieldError;
 import java.util.HashMap;
 import java.util.List;
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
 @RequestMapping("/characters")
@@ -103,7 +104,7 @@ public class CharacterController {
     
     
     
-    @PostMapping("/crear")
+    @PostMapping("/create")
     public ResponseEntity<Object> guardarPersonaje(@Valid @RequestBody Character personaje, Errors errors) {
         try{
             return new ResponseEntity<>(this.characterService.saveCharacter(personaje), HttpStatus.CREATED);            
@@ -120,6 +121,26 @@ public class CharacterController {
             // Retornamos un Array clave/valor, donde se puede visualizar el campo con error más la razón del error.
             return new ResponseEntity<>(mappedErrors, HttpStatus.BAD_REQUEST);
         }            
+    }
+    
+    
+    
+    
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Character> eliminarPersonaje(@PathVariable("id") Integer id){
+        Character characterFinded = characterService.findCharacterById(id);
+        
+        if(characterFinded != null){
+            // Primero necesitamos borrar el Character de la tabla intermedia que lo vincula con Show
+            characterService.deleteCharacterInMidTable(characterFinded.getIdCharacter());
+
+            // Luego, se borra el Character pedido
+            characterService.deleteCharacter(characterFinded.getIdCharacter());
+
+            return new ResponseEntity<>(characterFinded, HttpStatus.OK);            
+        } else {
+            throw new ModelNotFoundException("El personaje con el id " + id + " no existe");
+        }
     }
     
     
