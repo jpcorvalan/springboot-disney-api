@@ -24,7 +24,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
@@ -43,8 +46,6 @@ public class ShowController {
         return ListMapper.showListMapper(this.showService.findAllShows());        
     }
     */
-    
-    
     
     
     @GetMapping()
@@ -114,6 +115,29 @@ public class ShowController {
             
             return new ResponseEntity<>(mappedErrors, HttpStatus.BAD_REQUEST);
         }
+    }
+    
+    
+    
+    
+    @DeleteMapping(path = "{id}")
+    public ResponseEntity<Show> deleteShow(@PathVariable("id") Integer id){
+        Show showFinded = showService.findShowById(id);
+        
+        if(showFinded != null){
+            
+            // Borramos las relaciones que tiene Show con Character y Genre
+            showService.deleteCharacterShowRel(showFinded.getIdShow());            
+            showService.deleteGenreShowRel(showFinded.getIdShow());
+            
+            // Finalmente, borramos el show
+            showService.deleteShowById(showFinded.getIdShow());
+            
+            return new ResponseEntity<>(showFinded, HttpStatus.OK);
+        } else {
+            throw new ModelNotFoundException("El personaje con el id " + id + " no existe");
+        }
+            
     }
     
     

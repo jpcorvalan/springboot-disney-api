@@ -21,6 +21,12 @@ public interface IShowService {
     
     public Show saveShow(Show show);
     
+    public void deleteCharacterShowRel(Integer id);
+    
+    public void deleteGenreShowRel(Integer id);
+    
+    public void deleteShowById(Integer id);
+    
     public void deleteShow(Show show);
     
 }

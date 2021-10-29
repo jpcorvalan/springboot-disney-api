@@ -62,6 +62,26 @@ public class ShowServiceImplementation implements IShowService{
     public Show saveShow(Show show) {
         return showDao.save(show);
     }
+    
+    @Override
+    @Transactional
+    public void deleteCharacterShowRel(Integer id){
+        showDao.deleteCharacterShowRel(id);
+    }
+    
+    
+    @Override
+    @Transactional
+    public void deleteGenreShowRel(Integer id){
+        showDao.deleteGenreShowRel(id);
+    }
+    
+    
+    @Override
+    @Transactional
+    public void deleteShowById(Integer id){
+        showDao.deleteById(id);
+    }
 
     @Override
     @Transactional
