@@ -132,7 +132,7 @@ public class CharacterController {
         
         if(characterFinded != null){
             // Primero necesitamos borrar el Character de la tabla intermedia que lo vincula con Show
-            characterService.deleteCharacterInMidTable(characterFinded.getIdCharacter());
+            characterService.deleteCharacterShowRel(characterFinded.getIdCharacter());
 
             // Luego, se borra el Character pedido
             characterService.deleteCharacter(characterFinded.getIdCharacter());

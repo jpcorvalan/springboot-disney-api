@@ -19,7 +19,7 @@ public interface ICharacterService {
     
     public Character saveCharacter(Character character);
     
-    public void deleteCharacterInMidTable(Integer id);
+    public void deleteCharacterShowRel(Integer id);
     
     public boolean deleteCharacter(int id);
     

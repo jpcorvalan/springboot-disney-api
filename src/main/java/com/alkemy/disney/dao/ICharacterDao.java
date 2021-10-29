@@ -22,8 +22,8 @@ public interface ICharacterDao extends CrudRepository<Character, Integer> {
     public abstract List<Character> joinCharactersShows(Integer idShow);
 
     @Query(value = "DELETE FROM `characters_shows` \n"
-            + "WHERE `characters_shows`.`id` = ?", nativeQuery = true)
+            + "WHERE `characters_shows`.`id_character` = ?", nativeQuery = true)
     @Modifying
     @Transactional
-    public abstract void deleteCharacterInMidTable(Integer id);
+    public abstract void deleteCharacterShowRel(Integer id);
 }

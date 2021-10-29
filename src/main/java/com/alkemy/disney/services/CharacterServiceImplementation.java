@@ -73,8 +73,8 @@ public class CharacterServiceImplementation implements ICharacterService{
     
     
     @Override
-    public void deleteCharacterInMidTable(Integer id){
-        characterDao.deleteCharacterInMidTable(id);
+    public void deleteCharacterShowRel(Integer id){
+        characterDao.deleteCharacterShowRel(id);
     }
     
     
