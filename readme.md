@@ -27,6 +27,7 @@ https://drive.google.com/file/d/1mXkHaKZRPVTLcydFsrKhJxeNQ2PyMMfC/view
 -   Librería **Lombok** para reducir porciones de código
 -   IDE **NetBeans** 12.2
 -   **Git** para el versionado
+-   **Postman** para probar los endpoints
 
 <br>
 
@@ -56,6 +57,8 @@ Es ideal también que tenga conocimiento sobre las líneas del archivo **applica
 -   Para probar los endpoints, puede insertar datos manualmente a preferencia, o utilizar el siguiente código SQL para cargar datos rápidamente:
 
     SQL Query: https://drive.google.com/file/d/1zpJnp6mIOwnjEiXVNj6uG25NtFQyVcLc/view?usp=sharing
+    
+-   Para probar los endpoints con los distintos métodos HTTP, puede utilizar **Postman**
 
 <br>
 
