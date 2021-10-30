@@ -1,10 +1,15 @@
 
 package com.alkemy.disney.controllers;
 
-import com.alkemy.disney.exceptions.ModelNotFoundException;
+import java.util.HashMap;
+import java.util.List;
 import com.alkemy.disney.models.Character;
+import com.alkemy.disney.exceptions.ModelNotFoundException;
 import com.alkemy.disney.services.ICharacterService;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,10 +23,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import java.util.HashMap;
-import java.util.List;
-import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/characters")
@@ -36,23 +40,9 @@ public class CharacterController {
     
     
     
-    /*
-    @GetMapping("/query")
-    public List<Character> innerJoin(){
-        List<Character> allQueryCharacters = characterService.joinCharactersShows(idShow);
-        
-        for(Character chara : allQueryCharacters){
-            chara.setShows(ListMapper.showListMapper(chara.getShows()));
-        }
-        
-        return allQueryCharacters;        
-    }
-    */
-    
-    
-    
-
     @GetMapping()
+    @ApiOperation("Obtiene todos los Personajes (Characters) guardados")
+    @ApiResponse(code = 200, message = "OK")
     public List<Character> obtenerPersonajes(
             @RequestParam(required = false) String name, 
             @RequestParam(required = false) Double weight, 
@@ -86,7 +76,15 @@ public class CharacterController {
     
     
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Character> obtenerPersonajePorId(@PathVariable("id") int id){
+    @ApiOperation("Obtiene un Personaje (Character) por su número de ID especificado")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 404, message = "Personaje no encontrado")
+    })
+    public ResponseEntity<Character> obtenerPersonajePorId(
+            @ApiParam(value = "El ID del personaje a buscar", required = true, example = "3")  
+            @PathVariable("id") int id
+    ){
         
         Character characterFinded = this.characterService.findCharacterById(id);
         
@@ -105,6 +103,11 @@ public class CharacterController {
     
     
     @PostMapping("/create")
+    @ApiOperation("Crea un nuevo Personaje (Character)")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 400, message = "Campos faltantes o valores inválidos")
+    })
     public ResponseEntity<Object> guardarPersonaje(@Valid @RequestBody Character personaje, Errors errors) {
         try{
             return new ResponseEntity<>(this.characterService.saveCharacter(personaje), HttpStatus.CREATED);            
@@ -127,7 +130,15 @@ public class CharacterController {
     
     
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Character> eliminarPersonaje(@PathVariable("id") Integer id){
+    @ApiOperation("Borra un Personaje (Character) por su número de ID")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 404, message = "Personaje no encontrado")
+    })
+    public ResponseEntity<Character> eliminarPersonaje(
+            @ApiParam(value = "El ID del Personaje a borrar", required = true)
+            @PathVariable("id") Integer id
+    ){
         Character characterFinded = characterService.findCharacterById(id);
         
         if(characterFinded != null){

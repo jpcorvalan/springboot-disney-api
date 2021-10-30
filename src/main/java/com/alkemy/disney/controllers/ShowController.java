@@ -4,9 +4,9 @@ package com.alkemy.disney.controllers;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.validation.Valid;
 import com.alkemy.disney.exceptions.ModelNotFoundException;
 import com.alkemy.disney.models.Show;
-import com.alkemy.disney.services.ICharacterService;
 import com.alkemy.disney.services.IShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,17 +14,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import javax.validation.Valid;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/movies")
@@ -32,19 +35,15 @@ public class ShowController {
     
     @Autowired
     private IShowService showService;
-    private ICharacterService characterService;
     
     
     
-    /*
-    @GetMapping()
-    public List<Show> findAllShows(){        
-        return ListMapper.showListMapper(this.showService.findAllShows());        
-    }
-    */
+
     
     
     @GetMapping()
+    @ApiOperation("Obtiene todos los Shows")
+    @ApiResponse(code = 200, message = "OK")
     public List<Show> obtenerShows(
             @RequestParam(required = false) Integer genre,
             @RequestParam(required = false) String title,
@@ -78,8 +77,17 @@ public class ShowController {
     
     
     
-    @GetMapping(path = "{id}")
-    public ResponseEntity<Show> obtenerShowPorId(@PathVariable("id") int id){
+    
+    @GetMapping(path = "/{id}")
+    @ApiOperation("Obtiene un Show por su ID")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 404, message = "El Show especificado no fue encontrado")
+    })
+    public ResponseEntity<Show> obtenerShowPorId(
+            @ApiParam(value = "El ID del Show a buscar", required = true, example = "3")
+            @PathVariable("id") int id
+    ){
         
         Show findedShow = showService.findShowById(id);
         
@@ -99,6 +107,11 @@ public class ShowController {
     
     
     @PostMapping("/create")
+    @ApiOperation("Crea un Show")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 400, message = "Campos faltantes o valores inválidos")
+    })
     public ResponseEntity<Object> guardarShow(@RequestBody @Valid Show show, Errors errors) throws InvalidFormatException{
         try{
             return new ResponseEntity<>(showService.saveShow(show), HttpStatus.CREATED);
@@ -116,8 +129,16 @@ public class ShowController {
     
     
     
-    @DeleteMapping(path = "{id}")
-    public ResponseEntity<Show> borrarShow(@PathVariable("id") Integer id){
+    @DeleteMapping(path = "/{id}")
+    @ApiOperation("Borra un Show por su ID")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 404, message = "El Show especificado no fue encontrado")
+    })
+    public ResponseEntity<Show> borrarShow(
+            @ApiParam(value = "El ID del Show a eliminar", required = true, example = "3")
+            @PathVariable("id") Integer id
+    ){
         Show showFinded = showService.findShowById(id);
         
         if(showFinded != null){

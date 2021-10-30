@@ -7,6 +7,10 @@ import javax.validation.Valid;
 import com.alkemy.disney.models.Genre;
 import com.alkemy.disney.services.IGenreService;
 import com.alkemy.disney.exceptions.ModelNotFoundException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -33,6 +37,8 @@ public class GenreController {
     
     
     @GetMapping()
+    @ApiOperation("Obtiene todos los Generos (Genres) guardados")
+    @ApiResponse(code = 200, message = "OK")
     public List<Genre> obtenerGeneros(){
         List<Genre> allGenres = this.genreService.findAllGenres();
         
@@ -47,14 +53,33 @@ public class GenreController {
     
     
     @GetMapping(path = "/{id}")
-    public Genre obtenerGeneroPorId(@PathVariable Integer id){
-        return genreService.findGenreById(id);
+    @ApiOperation("Obtiene un Genero (Genre) por su ID")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 404, message = "Genero no encontrado")
+    })
+    public ResponseEntity<Genre> obtenerGeneroPorId(
+            @ApiParam(value = "El ID del Genero (Genre) a buscar", required = true, example = "1")
+            @PathVariable Integer id
+    ){
+        Genre findedGenre = this.genreService.findGenreById(id);
+        
+        if(findedGenre != null){
+            return new ResponseEntity<>(findedGenre, HttpStatus.OK);            
+        } else {
+            throw new ModelNotFoundException("El genero con el id " + id + " no existe");
+        }
     }
     
     
     
     
     @PostMapping("/create")
+    @ApiOperation("Crea un Genero (Genre)")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 404, message = "Genero no encontrado")
+    })
     public ResponseEntity<Object> guardarGenero(@RequestBody @Valid Genre genre, Errors errors){
         try{
             return new ResponseEntity<>(this.genreService.createGenre(genre), HttpStatus.CREATED);
@@ -73,7 +98,15 @@ public class GenreController {
     
     
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<Genre> eliminarGenero(@PathVariable("id") Integer id){
+    @ApiOperation("Borra un Genero (Genre) por su ID")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 404, message = "Genero no encontrado")
+    })
+    public ResponseEntity<Genre> eliminarGenero(
+            @ApiParam(value = "El ID del Genero (Genre) a eliminar", required = true, example = "1")
+            @PathVariable("id") Integer id
+    ){
         Genre genreFinded = genreService.findGenreById(id);
         
         if(genreFinded != null){
