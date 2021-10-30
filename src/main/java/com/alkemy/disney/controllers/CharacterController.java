@@ -62,7 +62,7 @@ public class CharacterController {
         
         // Si los parámetros solicitados no vienen en el query, se muestran todos los personajes
         if(name == null && weight == null && age == null && show == null){
-            return ListMapper.characterListMapper(this.characterService.findAllCharacters());            
+            return ListMapper.nullifiqueCharactersNonUsedColumns(this.characterService.findAllCharacters());
         } else {
             List<Character> queryCharacters = this.characterService.findByNameOrAgeOrWeight(name, age, weight);
             List<Character> joinShowsTable = this.characterService.joinCharactersShows(show);
@@ -75,7 +75,7 @@ public class CharacterController {
             if(queryCharacters.isEmpty()){                
                 return queryCharacters;
             }else{
-                return ListMapper.characterListMapper(queryCharacters);
+                return ListMapper.nullifiqueCharactersNonUsedColumns(queryCharacters);
             }
             
         }
@@ -92,7 +92,7 @@ public class CharacterController {
         
         if(characterFinded != null){            
             
-            characterFinded.setShows(ListMapper.showListMapper(characterFinded.getShows()));
+            characterFinded.setShows(ListMapper.nullifiqueShowsNonUsedColumns(characterFinded.getShows()));
 
             return new ResponseEntity<>(characterFinded, HttpStatus.OK);
             

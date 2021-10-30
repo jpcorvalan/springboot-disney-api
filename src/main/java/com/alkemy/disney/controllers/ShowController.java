@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.alkemy.disney.exceptions.ModelNotFoundException;
 import com.alkemy.disney.models.Show;
-import com.alkemy.disney.models.Character;
 import com.alkemy.disney.services.ICharacterService;
 import com.alkemy.disney.services.IShowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,7 +52,7 @@ public class ShowController {
     ){
         
         if (genre == null && title == null && order == null){
-            return ListMapper.showListMapper(showService.findAllShows());
+            return ListMapper.nullifiqueShowsNonUsedColumns(showService.findAllShows());
         } else {
             List<Show> showsByName = (title != null) ? showService.findByTitle(title) : new ArrayList<>();
             List<Show> showsByGenre = (genre != null) ? showService.findShowsByGenre(genre) : new ArrayList<>();
@@ -65,17 +61,17 @@ public class ShowController {
             if(order != null){
                 switch(order){
                     case "ASC":
-                        orderedShows = ListMapper.showListMapper(showService.orderAllByScoreAsc());
+                        orderedShows = ListMapper.nullifiqueShowsNonUsedColumns(showService.orderAllByScoreAsc());
                         return orderedShows;
                     case "DESC":
-                        orderedShows = ListMapper.showListMapper(showService.orderAllByScoreDesc());
+                        orderedShows = ListMapper.nullifiqueShowsNonUsedColumns(showService.orderAllByScoreDesc());
                         return orderedShows;
                 }                
             }
             
             showsByName.addAll(showsByGenre);
             
-            return ListMapper.showListMapper(showsByName);
+            return ListMapper.nullifiqueShowsNonUsedColumns(showsByName);
         }
         
     }
@@ -89,7 +85,7 @@ public class ShowController {
         
         if(findedShow != null){
             
-            findedShow.setCharacters(ListMapper.characterListMapper(findedShow.getCharacters()));
+            findedShow.setCharacters(ListMapper.nullifiqueCharactersNonUsedColumns(findedShow.getCharacters()));
             
             return new ResponseEntity<>(findedShow, HttpStatus.OK);
             
