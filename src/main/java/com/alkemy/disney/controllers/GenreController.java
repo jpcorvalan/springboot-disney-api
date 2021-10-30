@@ -46,6 +46,14 @@ public class GenreController {
     
     
     
+    @GetMapping(path = "/{id}")
+    public Genre obtenerGeneroPorId(@PathVariable Integer id){
+        return genreService.findGenreById(id);
+    }
+    
+    
+    
+    
     @PostMapping("/create")
     public ResponseEntity<Object> guardarGenero(@RequestBody @Valid Genre genre, Errors errors){
         try{
