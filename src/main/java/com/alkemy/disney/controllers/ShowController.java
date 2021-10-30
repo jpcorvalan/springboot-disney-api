@@ -45,7 +45,7 @@ public class ShowController {
     
     
     @GetMapping()
-    public List<Show> findShows(
+    public List<Show> obtenerShows(
             @RequestParam(required = false) Integer genre,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String order
@@ -79,7 +79,7 @@ public class ShowController {
     
     
     @GetMapping(path = "{id}")
-    public ResponseEntity<Show> findShowById(@PathVariable("id") int id){
+    public ResponseEntity<Show> obtenerShowPorId(@PathVariable("id") int id){
         
         Show findedShow = showService.findShowById(id);
         
@@ -99,7 +99,7 @@ public class ShowController {
     
     
     @PostMapping("/create")
-    public ResponseEntity<Object> saveShow(@RequestBody @Valid Show show, Errors errors) throws InvalidFormatException{
+    public ResponseEntity<Object> guardarShow(@RequestBody @Valid Show show, Errors errors) throws InvalidFormatException{
         try{
             return new ResponseEntity<>(showService.saveShow(show), HttpStatus.CREATED);
         } catch (Exception e){
@@ -117,7 +117,7 @@ public class ShowController {
     
     
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<Show> deleteShow(@PathVariable("id") Integer id){
+    public ResponseEntity<Show> borrarShow(@PathVariable("id") Integer id){
         Show showFinded = showService.findShowById(id);
         
         if(showFinded != null){
