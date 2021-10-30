@@ -24,11 +24,33 @@ public class GenreServiceImplementation implements IGenreService{
     public Genre findGenre(Genre genre) {
         return generoDao.findById(genre.getIdGenre()).orElse(null);
     }
+    
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Genre findGenreById(Integer id){
+        return generoDao.findById(id).orElse(null);
+    }
+    
 
     @Override
     @Transactional
     public Genre createGenre(Genre genre) {
         return generoDao.save(genre);
+    }
+    
+    
+    @Override
+    @Transactional
+    public void deleteGenreShowRel(Integer id){
+        generoDao.deleteGenreShowRel(id);
+    }
+    
+    
+    @Override
+    @Transactional
+    public void deleteGenreById(Integer id){
+        generoDao.deleteById(id);
     }
 
     @Override

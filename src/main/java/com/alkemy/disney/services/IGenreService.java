@@ -11,7 +11,13 @@ public interface IGenreService {
     
     public Genre findGenre(Genre genre);
     
+    public Genre findGenreById(Integer id);
+    
     public Genre createGenre(Genre genre);
+    
+    public void deleteGenreShowRel(Integer id);
+    
+    public void deleteGenreById(Integer id);
     
     public void deleteGenre(Genre genre);
     

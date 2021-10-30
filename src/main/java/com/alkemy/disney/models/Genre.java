@@ -1,7 +1,6 @@
 package com.alkemy.disney.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -16,7 +15,7 @@ import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
-@JsonInclude(Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "genres")
 @Getter
